@@ -1,4 +1,5 @@
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const http = require('http');
+http.createServer((req,res)=>{res.writeHead(200);res.end("Rosa Bet Bot is Live");}).listen(process.env.PORT || 10000, ()=>{console.log("HTTP server running for Render");});const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
