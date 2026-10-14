@@ -1,9 +1,14 @@
 const http = require('http');
-http.createServer((req,res)=>{res.writeHead(200);res.end("Rosa Bet Bot is Live");}).listen(process.env.PORT || 10000, ()=>{console.log("HTTP server running for Render");});const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+http.createServer((req,res)=>{res.writeHead(200);res.end("Rosa Bet Bot is Live");}).listen(process.env.PORT || 10000, ()=>{console.log("HTTP server running for Render");});
+
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
+
 const TOKEN = process.env.TOKEN;
+console.log("TOKEN present:",!!TOKEN, "length:", TOKEN? TOKEN.length : 0);
+
 function genCode(){return "ROSA-"+Math.random().toString(36).substring(2,8).toUpperCase();}
 function getCoupons(){
   return [
@@ -12,7 +17,9 @@ function getCoupons(){
     {title:"COUPON FUN - COTE 50+",code:genCode(),matches:"Score Exact 2-0 Bayern + 3-1 PSG",odds:"54.80",color:0xE74C3C}
   ];
 }
+
 client.once('ready',()=>{console.log(`READY ${client.user.tag}`);});
+client.on('error', (e)=>{console.log("CLIENT ERROR:", e)});
 client.on('messageCreate',async(message)=>{
   if(message.author.bot)return;
   if(message.content.toLowerCase().includes('!coupon')){
@@ -23,4 +30,5 @@ client.on('messageCreate',async(message)=>{
     }
   }
 });
-client.login(TOKEN);
+
+client.login(TOKEN).then(()=>console.log("Login attempt sent")).catch(err=>console.log("LOGIN FAILED:", err.message));
